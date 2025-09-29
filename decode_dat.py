@@ -6,23 +6,27 @@ import pandas as pd
 from parser_mmw_demo import parser_one_mmw_demo_output_packet
 
 
-def populate_result_dictionary(dictionary, frame_number, results):
-    """
-    Used the results to populate the dictionary initialized
-    with columns `frame_name`, `x`, `y`, `z`, `v`, `azimuth`, `snr`
-
-    Args:
-        dictionary (dict): the initialized dict
-        frame_number (int): the frame number
-        results (tuple): results coming from the `parser_one_mmw_demo_output_packet`
-    """
+def populate_result_dictionary(dictionary, frame_number, results, obj):
     dictionary["frame_number"].append(frame_number)
-    dictionary["x"].append(results[6][obj])
-    dictionary["y"].append(results[7][obj])
-    dictionary["z"].append(results[8][obj])
-    dictionary["v"].append(results[9][obj])
-    dictionary["azimuth"].append(results[11][obj])
-    dictionary["snr"].append(results[13][obj])
+    # Check each array length before accessing with [obj]
+    dictionary["x"].append(
+        results[6][obj] if len(results) > 6 and obj < len(results[6]) else None
+    )
+    dictionary["y"].append(
+        results[7][obj] if len(results) > 7 and obj < len(results[7]) else None
+    )
+    dictionary["z"].append(
+        results[8][obj] if len(results) > 8 and obj < len(results[8]) else None
+    )
+    dictionary["v"].append(
+        results[9][obj] if len(results) > 9 and obj < len(results[9]) else None
+    )
+    dictionary["azimuth"].append(
+        results[11][obj] if len(results) > 11 and obj < len(results[11]) else None
+    )
+    dictionary["snr"].append(
+        results[13][obj] if len(results) > 13 and obj < len(results[13]) else None
+    )
 
 
 if __name__ == "__main__":
@@ -80,7 +84,9 @@ if __name__ == "__main__":
             if count_objects > 0:
                 for obj in range(count_objects):
                     # populate the dict
-                    populate_result_dictionary(output_data_dict, frame_number, results)
+                    populate_result_dictionary(
+                        output_data_dict, frame_number, results, obj
+                    )
 
     # convert the dictionary in a pandas dataframe
     df = pd.DataFrame(output_data_dict)

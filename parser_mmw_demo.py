@@ -42,14 +42,18 @@ TC_PASS = 0
 TC_FAIL = 1
 
 
-def getUint32(data):
-    """!
-    This function coverts 4 bytes to a 32-bit unsigned integer.
+# def getUint32(data):
+#     """!
+#     This function coverts 4 bytes to a 32-bit unsigned integer.
 
-     @param data : 1-demension byte array
-     @return     : 32-bit unsigned integer
-    """
-    return data[0] + data[1] * 256 + data[2] * 65536 + data[3] * 16777216
+#      @param data : 1-demension byte array
+#      @return     : 32-bit unsigned integer
+#     """
+#     return data[0] + data[1] * 256 + data[2] * 65536 + data[3] * 16777216
+
+
+def getUint32(data):
+    return int.from_bytes(data, byteorder="little", signed=False)
 
 
 def getUint16(data):
